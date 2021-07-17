@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1_验证Diffing算法</title>
+    <style>
+        .list {
+            width: 200px;
+            height: 150px;
+            background-color: skyblue;
+            overflow-y: scroll;
+        }
+
+        .news {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备好一个容器-->
+    <div id="test"></div>
+
+
+    <!-- react核心库 -->
+    <script type="text/javascript" src="../js/react17/react17.development.js"></script>
+    <!-- react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react17/react-dom17.development.js"></script>
+    <!-- babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/react17/babel.min.js"></script>
+
+    <!-- 此处一定要写babel -->
+    <script type="text/babel">
+        class Time extends React.Component {
+            state = { date: new Date() }
+            componentDidMount() {
+                setInterval(() => {
+                    this.setState({
+                        date: new Date()
+                    })
+                }, 1000)
+            }
+            render() {
+                return (
+                    <div>
+                        <h1>hello</h1>
+                        <input type="text" />
+                        <span>现在是：{this.state.date.toTimeString()}</span>
+                    </div>
+                )
+            }
+        }
+        // 渲染组件到页面
+        ReactDOM.render(<Time />, document.getElementById('test'))
+    </script>
+</body>
+
+</html>

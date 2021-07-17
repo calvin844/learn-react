@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Person{
+            constructor(name,age){
+                this.name = name
+                this.age = age
+            }
+            study(){
+                // study放在哪里？——类的原型对象上，供实例使用
+                // 通过Person实例调用study时，study中的this就是Person实例
+                console.log(this)
+            }
+        }
+
+        const p1 = new Person('tom',18)
+        p1.study() //通过实例调用study方法
+        const x = p1.study
+        // 类中自定义的方法，在局部调用时，都会启动严格模式，this为undefined
+        x()
+
+        function demo(){
+            // 开启严格模式，函数内部开启严格模式仅该函数内部有效
+            'use strict'
+            console.log(this)
+        }
+        demo()
+    </script>
+</body>
+</html>
