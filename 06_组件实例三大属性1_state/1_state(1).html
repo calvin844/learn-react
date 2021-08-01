@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>state</title>
+</head>
+
+<body>
+    <!-- 准备好一个容器-->
+    <div id="test"></div>
+
+
+    <!-- react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <!-- 此处一定要写babel -->
+    <script type="text/babel">
+        // 1. 创建组件
+        class Weather extends React.Component {
+
+            
+            // 构造器调用几次——1次
+            // 构造器作用：1，初始化状态，2，修改一般方法中的this指向
+            constructor(props) {
+                console.log('constructor')
+                super(props)
+                // 初始化状态
+                this.state = {
+                    isHot: true,
+                    wind:"微风"
+                }
+                // 解决changeWeather中的this指向问题
+                // bind能做2件事，1是生成新的函数，2是修改函数里的this，这里的this是类的实例对象
+                // 拿类的原型上的changeWeather方法，修改它的this，然后放到类的实例对象上
+                this.changeWeather = this.changeWeather.bind(this)
+            }
+
+
+            // render调用几次——1+n次，1是初始化的那次，n是状态更新的次数
+            // render里的this是组件实例对象
+            // render作用：从状态里面读取数据，根据状态的值做展示
+            render() {
+                console.log('render')
+                // 读取状态
+                const { isHot,wind } = this.state
+                // 事件绑定使用onClick而不是onclick，值要使用函数名，而不要加()
+                return <h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'}，{wind}</h1>
+            }
+
+
+            // changeWeather调用几次——点几次，调几次
+            changeWeather() {
+                console.log('changeWeather')
+                // changeWeather放在哪里？——Weather的原型对象上，供实例使用
+                // 由于changeWeather是作为onClick的回调，所以不是通过实例调用的，是直接调用
+                // 类中的方法默认开启了局部的严格模式，所以changeWeather中的this为undefined
+                
+                // 获取原来的isHot值
+                const isHot = this.state.isHot
+                // 严重注意：状态（state）不可直接更改，下面这行就是直接更改
+                // this.state.isHot = !isHot  这是错误写法
+                // 严重注意：状态必须通过setState进行更新，且更新是一种合并，不是全部替换
+                this.setState({isHot:!isHot})
+                console.log(this.state)
+            }
+        }
+        // 2. 渲染组件到页面
+        ReactDOM.render(<Weather />, document.getElementById('test'))
+        // const title = document.getElementById('title')
+        // title.addEventListener('click', () => {
+        //     console.log('标题被点击了')
+        // })
+        // const title = document.getElementById('title')
+        // title.onclick = () => {
+        //     console.log('标题被点击了')
+        // }
+    </script>
+</body>
+
+</html>
